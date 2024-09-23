@@ -4,6 +4,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:order_manager/constants/text_constants.dart';
 import 'package:order_manager/controller_initializer.dart';
 import 'package:order_manager/views/home_order_screen.dart';
+import 'package:order_manager/views/login_screen.dart';
 
 
 class Loadingscreen extends StatelessWidget {
@@ -25,7 +26,7 @@ class Loadingscreen extends StatelessWidget {
         future: initController(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return HomeOrderScreen();
+            return WelcomeScreen();
           } else if (snapshot.hasError) {
             return Scaffold(
               body: SafeArea(

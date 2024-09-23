@@ -16,10 +16,11 @@ class OrderListBuilder extends GetxController {
             OrderTile(
               orderNo: order.orderId,
               orderStatus: order.orderStatus,
-              orderTotal: order.orderTotal,
+              tableNo: order.tableId,
               onTap: () {
                 Get.to(
                   () => SingleOrderScreen(orderItemList: order.orderItemList,orderTotal: order.orderTotal,),
+
                 );
               },
             ),

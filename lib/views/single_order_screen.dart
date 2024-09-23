@@ -47,11 +47,11 @@ class SingleOrderScreen extends StatelessWidget {
                             ? deviceWidth * 0.35
                             : deviceWidth * 0.4,
                       ),
-                      const Text(
+                      Text(
                         'My Orders',
                         style: TextStyle(
                           fontFamily: 'Barlow',
-                          fontSize: 28.0,
+                          fontSize: 35.0,
                           fontWeight: FontWeight.w500,
                           color: Colors.white,
                         ),
@@ -64,12 +64,12 @@ class SingleOrderScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      SizedBox(width: deviceWidth * 0.25),
+                      SizedBox(width: deviceWidth * 0.23),
                       Text(
                         'Item',
                         style: TextConstants.kSubTextStyle(fontSize: 23.0),
                       ),
-                      SizedBox(width: deviceWidth * 0.2),
+                      SizedBox(width: deviceWidth * 0.24),
                       Text(
                         'Qty',
                         style: TextConstants.kSubTextStyle(
@@ -78,7 +78,7 @@ class SingleOrderScreen extends StatelessWidget {
                       ),
                       SizedBox(
                         width: orientation == Orientation.portrait
-                            ? deviceWidth * 0.1
+                            ? deviceWidth * 0.2
                             : deviceWidth * 0.2,
                       ),
                       Center(
@@ -118,7 +118,7 @@ class SingleOrderScreen extends StatelessWidget {
                       Text(
                         'Order total :',
                         style: TextConstants.kSubTextStyle(
-                          fontSize: 28.0,
+                          fontSize: 32.0,
                         ),
                       ),
                       SizedBox(
@@ -130,7 +130,7 @@ class SingleOrderScreen extends StatelessWidget {
                         //TODO: calculate total
 
                         style: TextConstants.kSubTextStyle(
-                          fontSize: 28.0,
+                          fontSize: 32.0,
                           fontWeight: FontWeight.w400,
                         ),
                       ),
