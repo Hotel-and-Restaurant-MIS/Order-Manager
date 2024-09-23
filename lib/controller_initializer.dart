@@ -1,7 +1,10 @@
 import 'package:get/get.dart';
+import 'package:order_manager/controllers/data/login_data_controller.dart';
 import 'package:order_manager/controllers/data/order_list_data_controller.dart';
+import 'package:order_manager/controllers/network/login_network_controller.dart';
 import 'package:order_manager/controllers/network/order_list_network_controller.dart';
 import 'package:order_manager/controllers/view/home_order_screen/order_list_builder.dart';
+import 'package:order_manager/controllers/view/login_screen/login_state_controller.dart';
 import 'package:order_manager/controllers/view/single_order_screen/order_tile_state_controller.dart';
 
 class ControllerInitializer {
@@ -12,7 +15,9 @@ class ControllerInitializer {
   static Future<void> initAllControllers() async {
     try {
       await Get.putAsync(() => OrderListNetworkController.create());
-
+      Get.put(LoginNetworkController());
+      Get.put(LoginDataController());
+      Get.put(LoginStateController());
       Get.put(OrderListDataController());
       Get.put(OrderListBuilder());
       Get.put(OrderTileStateController());
