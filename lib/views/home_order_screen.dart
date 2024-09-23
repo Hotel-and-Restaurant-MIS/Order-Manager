@@ -10,38 +10,51 @@ class HomeOrderScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 3,
-      child: Scaffold(
-        appBar: AppBar(
-          toolbarHeight: 100.0,
-          title: Text(
-            'Orders',
-            style: TextConstants.kMainTextStyle(fontSize: 30.0),
-          ),
-          bottom: TabBar(
+      child: OrientationBuilder(builder: (context, orientation) {
+        double deviceWidth = MediaQuery
+            .of(context)
+            .size
+            .width;
 
-            labelColor: kButtonColour,
-            dividerHeight: 2.0,
-            indicatorWeight: 3.0,
-            indicatorColor: kButtonColour,
-            isScrollable: true,
-            tabs: kOrderStatus.map<Widget>((status){
-              return Tab(
-                child: Container(alignment: Alignment.center,
-                  padding: EdgeInsets.symmetric(horizontal: 60.0),
-                  height: 50,child: Text(status),),
-              );
-            }).toList(),
-          ),
-        ),
-        body: TabBarView(
-          children: kOrderStatus
-              .map<Widget>(
-                (status) => OrderListBuilder.instance
-                .buildListByStatus(status: status),
-          )
-              .toList(),
-        ),
+        return Scaffold(
+          backgroundColor: kBackgroundColour.withOpacity(0.4),
+          appBar: AppBar(
+            iconTheme: IconThemeData(size: 45.0),
+            toolbarHeight: 120.0,
+            title: Center(
+              child: Text(
+                'Orders',
+                style: TextConstants.kMainTextStyle(fontSize: 38.0),
+              ),
+            ),
+            bottom: TabBar(
 
+              labelColor: kButtonColour,
+              dividerHeight: 2.0,
+              indicatorWeight: 3.0,
+              indicatorColor: kButtonColour,
+              isScrollable: true,
+              tabs: kOrderStatus.map<Widget>((status) {
+                return Tab(
+                  child: Container(alignment: Alignment.center,
+                    padding: EdgeInsets.symmetric(horizontal: deviceWidth*0.08),
+                    height: 50, child: Text(status),),
+                );
+              }).toList(),
+            ),
+          ),
+          body: TabBarView(
+            children: kOrderStatus
+                .map<Widget>(
+                  (status) =>
+                  OrderListBuilder.instance
+                      .buildListByStatus(status: status),
+            )
+                .toList(),
+          ),
+
+        );
+      }
       ),
     );
   }
