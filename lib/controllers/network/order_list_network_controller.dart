@@ -1,42 +1,36 @@
+import 'dart:convert';
 import 'package:get/get.dart';
-import 'package:order_manager/constants/order_data.dart';
-import 'package:order_manager/enum/order_status.dart';
-import 'package:order_manager/models/order.dart';
+import 'package:order_manager/constants/network_constants.dart';
+import 'package:order_manager/exception/list_pass_exception.dart';
+import 'package:order_manager/exception/network_exception.dart';
+import 'package:http/http.dart' as http;
+
 
 class OrderListNetworkController extends GetxController {
+
   static OrderListNetworkController instance = Get.find();
-  Map _orderData = {};
-  Map get orderData => _orderData;
 
-  final List<Order> _orderList = OrderData.kOrderList;
-  List<Order> get orderList => _orderList;
+  Future<List<Map<String, dynamic>>> getOrderList() async{
+    List<Map<String,dynamic>> orderList = [];
 
-  OrderListNetworkController._();
+    Uri url = Uri.parse('${NetworkConstants.baseUrl}/vw/singleTableOrder/all');
+    var response = await http.get(url);
 
-  static Future<OrderListNetworkController> create() async {
-    OrderListNetworkController controller = OrderListNetworkController._();
-    await controller._getOrderList();
-    return controller;
-  }
-
-  Future<void> _getOrderList() async {
-    _orderData = {};
-    await Future.delayed(Duration(milliseconds: 100));
-    _orderData['Pending'] = _excludeJsonGeneratorByStatus(OrderStatus.Pending);
-    _orderData['Preparing'] =
-        _excludeJsonGeneratorByStatus(OrderStatus.Preparing);
-    _orderData['Completed'] =
-        _excludeJsonGeneratorByStatus(OrderStatus.Completed);
-  }
-
-  //simulate getting json file
-  List<Map<String, dynamic>> _excludeJsonGeneratorByStatus(OrderStatus status) {
-    return _orderList.any((order) => order.orderStatus == status)
-        ? _orderList
-            .where((order) => order.orderStatus == status)
-            .toList()
-            .map((order) => order.toMap())
-            .toList()
-        : [];
+    if (response.statusCode == 200) {
+      try {
+        var jsonResponse = jsonDecode(response.body) as List;
+        orderList = jsonResponse
+            .map((booking) => booking as Map<String, dynamic>)
+            .toList();
+        print('###length of orderList:${orderList.length}');
+        return orderList;
+      } catch (e) {
+        print(e);
+        throw ListPassException(message: 'json decode error in getOrderList');
+      }
+    } else {
+      print('get orders Request failed with status: ${response.statusCode}.');
+      throw NetworkException();
+    }
   }
 }
