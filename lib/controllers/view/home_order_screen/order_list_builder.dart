@@ -10,11 +10,11 @@ class OrderListBuilder extends GetxController {
 
   Widget buildListByStatus({required String status}) {
     List<Widget> children = [];
-    if (_oldc.menuDataMap[status] != null) {
-      for (var order in _oldc.menuDataMap[status]!) {
+    if (_oldc.orderDataMap[status] != null) {
+      for (var order in _oldc.orderDataMap[status]!) {
           children.add(
             OrderTile(
-              orderNo: order.orderId,
+              orderNo: order.orderId.toString(),
               orderStatus: order.orderStatus,
               tableNo: order.tableId,
               onTap: () {

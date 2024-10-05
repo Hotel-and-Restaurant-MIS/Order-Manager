@@ -7,7 +7,7 @@ import 'package:order_manager/controllers/data/login_data_controller.dart';
 import 'package:order_manager/controllers/view/login_screen/login_state_controller.dart';
 import 'package:order_manager/views/home_order_screen.dart';
 
-class WelcomeScreen extends StatelessWidget {
+class LoginScreen extends StatelessWidget {
   LoginStateController _lsc = LoginStateController.instance;
   LoginDataController _ldc = LoginDataController.instance;
   TextEditingController userNameController = TextEditingController();
@@ -124,10 +124,13 @@ class WelcomeScreen extends StatelessWidget {
               Obx(
                 () => Visibility(
                   visible: !_ldc.isValidUser && _lsc.isSubmitted.value,
-                  child: Text(
-                    'Incorrect Password!',
-                    style: TextConstants.kSubTextStyle(
-                      textColour: Colors.red,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Incorrect username or password !',
+                      style: TextConstants.kSubTextStyle(
+                        textColour: Colors.red,
+                      ),
                     ),
                   ),
                 ),

@@ -1,10 +1,8 @@
 import 'package:get/get.dart';
 import 'package:order_manager/controllers/data/login_data_controller.dart';
 
-
-class LoginStateController extends GetxController{
+class LoginStateController extends GetxController {
   static LoginStateController instance = Get.find();
-
 
   LoginDataController _ldc = LoginDataController.instance;
 
@@ -25,10 +23,12 @@ class LoginStateController extends GetxController{
     _userName = value;
   }
 
-  Future<void> checkUser()async{
-
-    await _ldc.CheckUser(_password!);
-    isSubmitted.value = true;
+  Future<void> checkUser() async {
+    _userName != null
+        ? {
+            await _ldc.CheckUser(_password!),
+            isSubmitted.value = true,
+          }
+        : {};
   }
-
 }
