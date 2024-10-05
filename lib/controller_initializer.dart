@@ -14,7 +14,7 @@ class ControllerInitializer {
 
   static Future<void> initAllControllers() async {
     try {
-      await Get.putAsync(() => OrderListNetworkController.create());
+      Get.put(OrderListNetworkController());
       Get.put(LoginNetworkController());
       Get.put(LoginDataController());
       Get.put(LoginStateController());
