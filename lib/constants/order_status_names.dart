@@ -1,0 +1,1 @@
+const kOrderStatusList = ['Pending','Preparing','Completed','Paid'];
