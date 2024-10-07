@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:order_manager/constants/colours.dart';
 import 'package:order_manager/constants/order_status.dart';
+import 'package:order_manager/controllers/data/order_list_data_controller.dart';
 import 'package:order_manager/controllers/view/single_order_screen/order_tile_state_controller.dart';
 import 'package:order_manager/enum/order_status.dart';
 
 class OrderTile extends StatelessWidget {
-  String orderNo;
+  int orderNo;
   OrderStatus orderStatus;
   int tableNo;
   Function() onTap;
@@ -16,9 +17,28 @@ class OrderTile extends StatelessWidget {
       required this.tableNo,
       required this.onTap});
 
-  OrderTileStateController _otsc = OrderTileStateController.instance;
+  OrderListDataController _oldc = OrderListDataController.instance;
   @override
   Widget build(BuildContext context) {
+    String buttonName;
+    String newOrderStatus = '';
+    switch (orderStatus) {
+      case OrderStatus.Pending:
+        buttonName = 'Start Preparing';
+        newOrderStatus = OrderStatus.Preparing.name;
+        break;
+      case OrderStatus.Preparing:
+        buttonName = 'Complete';
+        newOrderStatus = OrderStatus.Completed.name;
+        break;
+      case OrderStatus.Completed:
+        buttonName = 'Paid';
+        newOrderStatus = OrderStatus.Paid.name;
+        break;
+      default:
+        buttonName = '';
+        break;
+    }
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: OrientationBuilder(builder: (context, orientation) {
@@ -55,20 +75,29 @@ class OrderTile extends StatelessWidget {
                     ),
                   ],
                 ),
-                DropdownMenu(
-                  initialSelection: 'Pending',
-                  width: 190.0,
-                  menuHeight: 150.0,
-                  dropdownMenuEntries: kOrderStatus
-                      .map<DropdownMenuEntry<String>>((String value) {
-                    return DropdownMenuEntry<String>(
-                        value: value, label: value);
-                  }).toList(),
-                  onSelected: (String? selectedValue) {
-                    _otsc.setOrderStatus(selectedValue!);
+                GestureDetector(
+                  onTap: () async {
+                    await _oldc.updateStatus(orderNo, newOrderStatus,orderStatus.name);
                   },
-                  // initialSelection: roomTypeList.first
-                ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: kButtonColour,
+                      border: Border.all(width: 1.0, color: Colors.white),
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    width: 150.0,
+                    height: 40.0,
+                    child: Center(
+                      child: Text(
+                        buttonName,
+                        style: TextStyle(
+                          fontSize: 17.0,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                )
               ],
             ),
           ),
