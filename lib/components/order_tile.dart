@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:order_manager/components/loading_dialog.dart';
 import 'package:order_manager/constants/colours.dart';
 import 'package:order_manager/constants/order_status.dart';
 import 'package:order_manager/controllers/data/order_list_data_controller.dart';
@@ -22,6 +23,7 @@ class OrderTile extends StatelessWidget {
   Widget build(BuildContext context) {
     String buttonName;
     String newOrderStatus = '';
+    bool isPaidOrder = false;
     switch (orderStatus) {
       case OrderStatus.Pending:
         buttonName = 'Start Preparing';
@@ -34,6 +36,10 @@ class OrderTile extends StatelessWidget {
       case OrderStatus.Completed:
         buttonName = 'Paid';
         newOrderStatus = OrderStatus.Paid.name;
+        break;
+      case OrderStatus.Paid:
+        isPaidOrder = true;
+        buttonName = '';
         break;
       default:
         buttonName = '';
@@ -75,24 +81,33 @@ class OrderTile extends StatelessWidget {
                     ),
                   ],
                 ),
-                GestureDetector(
-                  onTap: () async {
-                    await _oldc.updateStatus(orderNo, newOrderStatus,orderStatus.name);
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: kButtonColour,
-                      border: Border.all(width: 1.0, color: Colors.white),
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                    width: 150.0,
-                    height: 40.0,
-                    child: Center(
-                      child: Text(
-                        buttonName,
-                        style: TextStyle(
-                          fontSize: 17.0,
-                          color: Colors.white,
+                Visibility(
+                  visible: !isPaidOrder,
+                  child: GestureDetector(
+                    onTap: () async {
+                      LoadingDialog(callerFunction: () async {
+                        await _oldc.updateStatus(
+                            orderNo, newOrderStatus, orderStatus.name);
+                      }, onErrorCallBack: (e) {
+                        print('error in changing status of the order');
+                        print(e.toString());
+                      });
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: kButtonColour,
+                        border: Border.all(width: 1.0, color: Colors.white),
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      width: 150.0,
+                      height: 40.0,
+                      child: Center(
+                        child: Text(
+                          buttonName,
+                          style: TextStyle(
+                            fontSize: 17.0,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
