@@ -31,18 +31,6 @@ class OrderItem {
       'addonList': addonList.map((e) => e.toString()).toList(),
     };
   }
-  // factory OrderItem.fromMap(Map<String, dynamic> map) {
-  //   return OrderItem(
-  //     orderItemId: map['orderItemId'],
-  //     quantity: map['quantity'],
-  //     specialNote: map['specialNote'],
-  //     totalPrice: map['totalPrice'].toDouble(),
-  //     menuItem: MenuItem.fromMap(map['menuItem']), // Map the nested menuItem
-  //     addonList: map['selectedAddOns'] != null
-  //         ? List<int>.from(map['selectedAddOns']) // Assuming add-ons are integers
-  //         : [],
-  //   );
-  // }
 
   //after changing the db by sunera.
   factory OrderItem.fromMap(Map<String, dynamic> map) {
