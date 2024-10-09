@@ -15,6 +15,7 @@ class OrderListBuilder extends GetxController {
         for (var order in _oldc.orderDataMap[status]!) {
           children.add(
             OrderTile(
+              dateTime: order.dateTime,
               orderNo: order.orderId!,
               orderStatus: order.orderStatus,
               tableNo: order.tableId,
