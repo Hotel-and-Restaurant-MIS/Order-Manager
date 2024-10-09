@@ -7,10 +7,12 @@ class Order {
   final double orderTotal;
   int? orderId;
   final int tableId;
+  final DateTime dateTime;
 
   Order(
       {this.orderId,
         required this.orderItemList,
+        required this.dateTime,
         required this.orderStatus,
         required this.orderTotal,
         required this.tableId});
@@ -20,6 +22,7 @@ class Order {
   // Factory constructor to create an instance of Order from a map
   factory Order.fromMap(Map<String, dynamic> map) {
     return Order(
+        dateTime: DateTime.parse(map['dateTime']),
         orderId: map['orderId'],
         orderItemList: List<OrderItem>.from(
             map['orderItems'].map((item) => OrderItem.fromMap(item))

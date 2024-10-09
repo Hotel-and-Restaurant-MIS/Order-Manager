@@ -9,34 +9,37 @@ class OrderListBuilder extends GetxController {
   OrderListDataController _oldc = OrderListDataController.instance;
 
   Widget buildListByStatus({required String status}) {
-    List<Widget> children = [];
-    if (_oldc.orderDataMap[status] != null) {
-      for (var order in _oldc.orderDataMap[status]!) {
+    return Obx(() {
+      List<Widget> children = [];
+      if (_oldc.orderDataMap[status] != null) {
+        for (var order in _oldc.orderDataMap[status]!) {
           children.add(
             OrderTile(
-              orderNo: order.orderId.toString(),
+              dateTime: order.dateTime,
+              orderNo: order.orderId!,
               orderStatus: order.orderStatus,
               tableNo: order.tableId,
               onTap: () {
-                Get.to(
-                  () => SingleOrderScreen(orderItemList: order.orderItemList,orderTotal: order.orderTotal,),
-
-                );
+                Get.to(() => SingleOrderScreen(
+                  orderItemList: order.orderItemList,
+                  orderTotal: order.orderTotal,
+                ));
               },
             ),
           );
         }
-    }
-    return CustomScrollView(
-      primary: false,
-      slivers: <Widget>[
-        SliverPadding(
-          padding: const EdgeInsets.all(15.0),
-          sliver: SliverList.list(
-            children: children,
+      }
+      return CustomScrollView(
+        primary: false,
+        slivers: <Widget>[
+          SliverPadding(
+            padding: const EdgeInsets.all(15.0),
+            sliver: SliverList.list(
+              children: children,
+            ),
           ),
-        ),
-      ],
-    );
+        ],
+      );
+    });
   }
 }

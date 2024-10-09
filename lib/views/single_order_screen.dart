@@ -69,7 +69,7 @@ class SingleOrderScreen extends StatelessWidget {
                         'Item',
                         style: TextConstants.kSubTextStyle(fontSize: 23.0),
                       ),
-                      SizedBox(width: deviceWidth * 0.24),
+                      SizedBox(width: deviceWidth * 0.27),
                       Text(
                         'Qty',
                         style: TextConstants.kSubTextStyle(
@@ -78,7 +78,7 @@ class SingleOrderScreen extends StatelessWidget {
                       ),
                       SizedBox(
                         width: orientation == Orientation.portrait
-                            ? deviceWidth * 0.2
+                            ? deviceWidth * 0.17
                             : deviceWidth * 0.2,
                       ),
                       Center(
