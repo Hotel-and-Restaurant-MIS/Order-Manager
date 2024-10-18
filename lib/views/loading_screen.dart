@@ -6,7 +6,6 @@ import 'package:order_manager/controller_initializer.dart';
 import 'package:order_manager/views/home_order_screen.dart';
 import 'package:order_manager/views/login_screen.dart';
 
-
 class Loadingscreen extends StatelessWidget {
   Future<String> initController() async {
     try {
@@ -23,33 +22,34 @@ class Loadingscreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: initController(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return HomeOrderScreen();
-          } else if (snapshot.hasError) {
-            return Scaffold(
-              body: SafeArea(
-                child: Center(
-                  child: Text(
-                    'An Unexpected error occurs.',
-                    style: TextConstants.kMainTextStyle(textColour: Colors.red),
-                  ),
+      future: initController(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return HomeOrderScreen();
+        } else if (snapshot.hasError) {
+          return Scaffold(
+            body: SafeArea(
+              child: Center(
+                child: Text(
+                  'An Unexpected error occurs.',
+                  style: TextConstants.kMainTextStyle(textColour: Colors.red),
                 ),
               ),
-            );
-          } else {
-            return Scaffold(
-              body: SafeArea(
-                child: Center(
-                  child: LoadingAnimationWidget.threeArchedCircle(
-                    color: Colors.white,
-                    size: 50.0,
-                  ),
+            ),
+          );
+        } else {
+          return Scaffold(
+            body: SafeArea(
+              child: Center(
+                child: LoadingAnimationWidget.threeArchedCircle(
+                  color: Colors.white,
+                  size: 50.0,
                 ),
               ),
-            );
-          }
-        });
+            ),
+          );
+        }
+      },
+    );
   }
 }

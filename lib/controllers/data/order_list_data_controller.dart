@@ -54,6 +54,16 @@ class OrderListDataController extends GetxController {
     setIsGettingOrderData(false);
   }
 
+  void updateOrderList(Order order){
+    print('update function is called');
+    for(String status in kOrderStatusList){
+      OrderStatus statusEnum = getOrderStatusFromString(status);
+      if(order.orderStatus == statusEnum){
+        _orderDataMap[status]?.add(order);
+      }
+    }
+  }
+
   Future<void>updateStatus(int orderId, String newStatus, String oldStatus) async{
     try{
       Map<String,dynamic> orderMap = await _olnc.updateOrderStatus(StatusUpdater(orderId: orderId, newOrderStatus: newStatus));

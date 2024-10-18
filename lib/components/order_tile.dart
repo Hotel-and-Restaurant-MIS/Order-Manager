@@ -83,7 +83,7 @@ class OrderTile extends StatelessWidget {
                     ),
                   ],
                 ),
-                Text('${DateFormat('HH:mm a').format(dateTime)}',style: TextStyle(fontSize: 22.0,color: Colors.white),),
+                Text('${DateFormat('HH:mm').format(dateTime)}',style: TextStyle(fontSize: 22.0,color: Colors.white),),
                 Visibility(
                   visible: !isPaidOrder,
                   child: GestureDetector(
