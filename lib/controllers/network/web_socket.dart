@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:order_manager/constants/colours.dart';
 import 'package:order_manager/constants/network_constants.dart';
+import 'package:order_manager/constants/text_constants.dart';
 import 'package:order_manager/controllers/data/order_list_data_controller.dart';
 import 'package:order_manager/models/order.dart';
 import 'package:socket_io_client/socket_io_client.dart' as SIO;
@@ -34,7 +36,36 @@ class WebSocketController extends GetxController {
       _socket.on(
         'readHelpRequest',
         (data) {
-          String tableNo = jsonDecode(data);
+          Map<String, dynamic> jsonMap = jsonDecode(data);
+          String tableNo = jsonMap['tableNo'].toString();
+
+          Get.defaultDialog(
+            radius: 10.0,
+            title: 'Customer Need Help',
+            titleStyle: TextConstants.kMainTextStyle(),
+            titlePadding: EdgeInsets.all(10.0),
+            content: Padding(
+              padding: const EdgeInsets.only(
+                  left: 15.0, right: 15.0, top: 10.0, bottom: 10.0),
+              child: Text(
+                'Table $tableNo is requesting support of a waiter.',
+                style: TextConstants.kSubTextStyle(fontSize: 18.0),
+              ),
+            ),
+            backgroundColor: kBackgroundColour,
+            confirm: ElevatedButton(
+              onPressed: () {
+                Get.back(); // Close dialog when 'OK' is pressed
+              },
+              child: Text(
+                'OK',
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          );
         },
       );
 
@@ -44,25 +75,42 @@ class WebSocketController extends GetxController {
           Map<String, dynamic> orderMap = jsonDecode(data);
           OrderListDataController.instance
               .updateOrderList(Order.fromMap(orderMap));
-          print('#### new order is coming');
+
         },
       );
 
       _socket.on(
         "readRequestBill",
         (data) {
-          Map<String, dynamic> orderMap = jsonDecode(data);
-          String tableNo = orderMap['tableNo'].toString();
-          print('readRequestBill executed');
+          Map<String, dynamic> jsonMap = jsonDecode(data);
+          String tableNo = jsonMap['tableNo'].toString();
 
+          // Show the dialog when the WebSocket event is triggered
           Get.defaultDialog(
+            radius: 10.0,
             title: 'Bill Request',
-            content: Text('Table $tableNo is requesting the bill.'),
+            titleStyle: TextConstants.kMainTextStyle(),
+            titlePadding: EdgeInsets.all(10.0),
+            content: Padding(
+              padding: const EdgeInsets.only(
+                  left: 15.0, right: 15.0, top: 10.0, bottom: 10.0),
+              child: Text(
+                'Table $tableNo is requesting the bill.',
+                style: TextConstants.kSubTextStyle(fontSize: 18.0),
+              ),
+            ),
+            backgroundColor: kBackgroundColour,
             confirm: ElevatedButton(
               onPressed: () {
-                Get.back(); // Close the dialog when 'OK' is pressed
+                Get.back(); // Close dialog when 'OK' is pressed
               },
-              child: Text('OK'),
+              child: Text(
+                'OK',
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
             ),
           );
         },
