@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:order_manager/constants/network_constants.dart';
 import 'package:order_manager/controllers/data/order_list_data_controller.dart';
 import 'package:order_manager/models/order.dart';
@@ -8,7 +9,6 @@ import 'package:get/get.dart';
 class WebSocketController extends GetxController {
   static WebSocketController instance = Get.find();
 
-  OrderListDataController _oldc = OrderListDataController.instance;
   late SIO.Socket _socket;
 
   WebSocketController._();
@@ -42,8 +42,29 @@ class WebSocketController extends GetxController {
         "readAddedNewOrder",
         (data) {
           Map<String, dynamic> orderMap = jsonDecode(data);
-          _oldc.updateOrderList(Order.fromMap(orderMap));
+          OrderListDataController.instance
+              .updateOrderList(Order.fromMap(orderMap));
           print('#### new order is coming');
+        },
+      );
+
+      _socket.on(
+        "readRequestBill",
+        (data) {
+          Map<String, dynamic> orderMap = jsonDecode(data);
+          String tableNo = orderMap['tableNo'].toString();
+          print('readRequestBill executed');
+
+          Get.defaultDialog(
+            title: 'Bill Request',
+            content: Text('Table $tableNo is requesting the bill.'),
+            confirm: ElevatedButton(
+              onPressed: () {
+                Get.back(); // Close the dialog when 'OK' is pressed
+              },
+              child: Text('OK'),
+            ),
+          );
         },
       );
     } catch (e) {
@@ -52,10 +73,29 @@ class WebSocketController extends GetxController {
     }
   }
 
+  Future<void> updateOrderStatus(
+      int tableNo, int orderId, String oldStatus, String newStatus) async {
+    try {
+      _socket.emit(
+        'orderStatusUpdated',
+        jsonEncode(
+          {
+            'tableNo': tableNo,
+            'orderId': orderId,
+            'oldStatus': oldStatus,
+            'newStatus': newStatus
+          },
+        ),
+      );
+    } catch (e) {
+      print('Error updating order status');
+    }
+  }
+
   @override
   void onInit() {
     if (!_socket.connected) {
-      _socket.connect();  // Ensure socket is only connected if it's not already
+      _socket.connect(); // Ensure socket is only connected if it's not already
     }
     super.onInit();
   }
