@@ -15,14 +15,12 @@ class ControllerInitializer {
 
   static Future<void> initAllControllers() async {
     try {
+      await Get.putAsync(() => WebSocketController.create());
       Get.put(OrderListNetworkController());
       Get.put(OrderListDataController());
-      await Get.putAsync(() => WebSocketController.create());
-
       Get.put(LoginNetworkController());
       Get.put(LoginDataController());
       Get.put(LoginStateController());
-
       Get.put(OrderListBuilder());
       Get.put(OrderTileStateController());
       _isIntialized = true;
