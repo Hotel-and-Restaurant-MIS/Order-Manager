@@ -33,6 +33,13 @@ class WebSocketController extends GetxController {
         print('Connection established');
       });
 
+      _socket.on('readPayment', (data){
+        Map<String, dynamic> jsonMap = jsonDecode(data);
+        int tableNo = jsonMap['tableNo'];
+        print('readPayment is executed');
+        OrderListDataController.instance.updatePaidOrders(tableNo: tableNo);
+
+      });
       _socket.on(
         'readHelpRequest',
         (data) {
