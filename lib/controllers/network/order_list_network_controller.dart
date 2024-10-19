@@ -20,7 +20,6 @@ class OrderListNetworkController extends GetxController {
         var jsonResponse = jsonDecode(response.body) as List;
         orderList =
             jsonResponse.map((order) => order as Map<String, dynamic>).toList();
-        print('###length of orderList:${orderList.length}');
         return orderList;
       } catch (e) {
         print(e);
