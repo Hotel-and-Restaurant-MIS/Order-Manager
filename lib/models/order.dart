@@ -1,9 +1,10 @@
+import 'package:get/get.dart';
 import 'package:order_manager/enum/order_status.dart';
 import 'package:order_manager/models/order_item.dart';
 
 class Order {
   final List<OrderItem> orderItemList;
-  final OrderStatus orderStatus;
+  Rx <OrderStatus> orderStatus;
   final double orderTotal;
   int? orderId;
   final int tableId;

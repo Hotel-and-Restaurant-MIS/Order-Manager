@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:order_manager/components/loading_dialog.dart';
 import 'package:order_manager/constants/colours.dart';
@@ -7,17 +8,16 @@ import 'package:order_manager/controllers/data/order_list_data_controller.dart';
 import 'package:order_manager/controllers/view/single_order_screen/order_tile_state_controller.dart';
 import 'package:order_manager/enum/order_status.dart';
 
-
 class OrderTile extends StatelessWidget {
   int orderNo;
-  OrderStatus orderStatus;
+  Rx<OrderStatus> orderStatus;
   int tableNo;
   DateTime dateTime;
   Function() onTap;
 
   OrderTile(
       {required this.orderNo,
-        required this.dateTime,
+      required this.dateTime,
       required this.orderStatus,
       required this.tableNo,
       required this.onTap});
@@ -28,7 +28,8 @@ class OrderTile extends StatelessWidget {
     String buttonName;
     String newOrderStatus = '';
     bool isPaidOrder = false;
-    switch (orderStatus) {
+    bool isCompletedOrder = false;
+    switch (orderStatus.value) {
       case OrderStatus.Pending:
         buttonName = 'Prepare';
         newOrderStatus = OrderStatus.Preparing.name;
@@ -40,6 +41,7 @@ class OrderTile extends StatelessWidget {
       case OrderStatus.Completed:
         buttonName = 'Complete Payment';
         newOrderStatus = OrderStatus.Paid.name;
+        isCompletedOrder = true;
         break;
       case OrderStatus.Paid:
         isPaidOrder = true;
@@ -60,7 +62,8 @@ class OrderTile extends StatelessWidget {
                 color: kBackgroundColour.withOpacity(0.9),
                 borderRadius: BorderRadius.circular(10.0)),
             margin: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-            padding: EdgeInsets.only(top: 15.0,bottom: 15.0,left: 40.0,right: 60.0),
+            padding: EdgeInsets.only(
+                top: 15.0, bottom: 15.0, left: 40.0, right: 60.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -83,15 +86,21 @@ class OrderTile extends StatelessWidget {
                     ),
                   ],
                 ),
-                Text('${DateFormat('HH:mm a').format(dateTime)}',style: TextStyle(fontSize: 22.0,color: Colors.white),),
+                Text(
+                  '${DateFormat('HH:mm').format(dateTime)}',
+                  style: TextStyle(fontSize: 22.0, color: Colors.white),
+                ),
                 Visibility(
-                  visible: !isPaidOrder,
+                  visible: !isPaidOrder &&  !isCompletedOrder,
                   child: GestureDetector(
                     onTap: () async {
                       LoadingDialog(
                         callerFunction: () async {
                           await _oldc.updateStatus(
-                              orderNo, newOrderStatus, orderStatus.name);
+                              tableNo: tableNo,
+                              orderId: orderNo,
+                              newStatus: newOrderStatus,
+                              oldStatus: orderStatus.value.name);
                         },
                         onErrorCallBack: (e) {
                           print('error in changing status of the order');
@@ -111,14 +120,14 @@ class OrderTile extends StatelessWidget {
                       height: 45.0,
                       child: Center(
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 12.0,right: 12.0),
+                          padding:
+                              const EdgeInsets.only(left: 12.0, right: 12.0),
                           child: Text(
                             buttonName,
                             style: TextStyle(
-                              fontSize: 20.0,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500
-                            ),
+                                fontSize: 20.0,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500),
                           ),
                         ),
                       ),

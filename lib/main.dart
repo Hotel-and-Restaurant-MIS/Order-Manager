@@ -14,6 +14,7 @@ class order_manager extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       theme:ThemeData.dark(),
       home: Loadingscreen(),
     );
