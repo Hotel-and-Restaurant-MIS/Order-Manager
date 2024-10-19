@@ -66,8 +66,9 @@ class OrderListDataController extends GetxController {
       }
     }
   }
-  void updatePaidOrders({required int tableNo}) {
-    print('updatePaidOrders function is called');
+
+  // Change completed order status to paid.
+  Future<void> updatePaidOrders({required int tableNo}) async{
 
     // Create a copy of the 'Completed' list to iterate over
     List<Order> completedOrders = List.from(_orderDataMap['Completed']!);
@@ -77,11 +78,8 @@ class OrderListDataController extends GetxController {
         Order newOrder = order;
         newOrder.orderStatus = getOrderStatusFromString(OrderStatus.Paid.name);
 
-        // Add the order to the 'Paid' list
-        _orderDataMap['Paid']?.add(newOrder);
+        await updateStatus(tableNo: tableNo, orderId: order.orderId!, newStatus: 'Paid', oldStatus: 'Completed');
 
-        // Remove the order from the 'Completed' list
-        _orderDataMap['Completed']?.remove(order);
       }
     }
   }
