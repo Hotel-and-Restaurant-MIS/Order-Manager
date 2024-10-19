@@ -25,7 +25,7 @@ class Loadingscreen extends StatelessWidget {
       future: initController(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return HomeOrderScreen();
+          return LoginScreen();
         } else if (snapshot.hasError) {
           return Scaffold(
             body: SafeArea(
