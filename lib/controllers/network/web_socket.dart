@@ -69,6 +69,7 @@ class WebSocketController extends GetxController {
                 style: TextStyle(
                   fontSize: 16.0,
                   fontWeight: FontWeight.w600,
+                  color: Color(0xFFEA7C69)
                 ),
               ),
             ),
@@ -116,6 +117,7 @@ class WebSocketController extends GetxController {
                 style: TextStyle(
                   fontSize: 16.0,
                   fontWeight: FontWeight.w600,
+                  color: Color(0xFFEA7C69)
                 ),
               ),
             ),

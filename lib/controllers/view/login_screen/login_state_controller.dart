@@ -26,7 +26,7 @@ class LoginStateController extends GetxController {
   Future<void> checkUser() async {
     _userName != null
         ? {
-            await _ldc.CheckUser(_password!),
+            await _ldc.CheckUser(_password!,_userName!),
             isSubmitted.value = true,
           }
         : {};
